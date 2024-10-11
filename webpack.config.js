@@ -1,0 +1,43 @@
+// webpack.config.js
+const path = require("path")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
+const Dotenv = require("dotenv-webpack")
+
+module.exports = {
+  mode: "development",
+  entry: "./src/index.js",
+  output: {
+    filename: "main.js",
+    path: path.resolve(__dirname, "dist"),
+    clean: true,
+  },
+  devtool: "eval-source-map",
+  devServer: {
+    watchFiles: ["./src/template.html"],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/template.html",
+    }),
+    new Dotenv({
+      path: "./.env", // Path to .env file (this is the default)
+      safe: false, // load .env.example (defaults to "false" which does not use dotenv-safe)
+    }),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: "asset/resource",
+      },
+    ],
+  },
+}
